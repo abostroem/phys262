@@ -12,6 +12,6 @@ function today = calc_from_omega(omega_m0, omega_L0)
     today.rho_m = omega_m0*today.rho_c100;
     today.rho_L = omega_L0*today.rho_c100;
     
-    today.rho_k = today.rho_m+today.rho_L+today.rho_r - ((today.H^2*3.)/(8. * pi * constants.G));
+    today.rho_k = ((today.H^2*3.)/(8. * pi * constants.G)) - today.rho_m-today.rho_L-today.rho_r;
     
     
