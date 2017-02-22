@@ -4,4 +4,4 @@ function params = load_fixed_params()
     params.V_0 = 1.;
     params.delta = 0.005;
     params.chi = 1.;
-    params.a0 = 1.;
+    params.a0 = 1;
