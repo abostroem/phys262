@@ -1,4 +1,4 @@
-function [t phi phidot V a] = evolve_phi(a_initial, phi_initial, phidot_in, a0, rho_m0_in, tspan, npts_return)
+function [t phi phidot V a params] = evolve_phi(a_initial, phi_initial, phidot_in, a0, rho_m0_in, tspan, npts_return)
 
     params = load_fixed_params();
     phidot_initial = find_phidot(phi_initial, params);
@@ -34,3 +34,4 @@ function [t phi phidot V a] = evolve_phi(a_initial, phi_initial, phidot_in, a0, 
     a = y(2, :);
     phidot = y(3, :);
     V = calc_v(phi, params);
+end
