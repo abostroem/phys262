@@ -23,7 +23,7 @@ y = deval(solution, t_reheat);
 phi_reheat = y(1)
 phidot_reheat = y(2)
 V_reheat = calc_v(phi_reheat, params)
-rho_phi_reheat = phidot_reheat^2/2 + V_reheat
+rho_reheat = phidot_reheat^2/2 + V_reheat
 rho_r0 = 1.928E-51; %GeV^4, assume g*=2
 a_reheating = (rho_r0/rho_reheat)^(0.25) %assume a_0 = 1.0
 
