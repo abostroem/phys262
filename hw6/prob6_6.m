@@ -26,12 +26,11 @@ loga_reheat_infl = y(3)
 V_reheat = calc_v(phi_reheat, params)
 rho_reheat = phidot_reheat^2/2 + V_reheat
 rho_r0 = 1.928E-51; %GeV^4, assume g*=2
-a_reheat_friedman = (rho_r0/rho_reheat)^(0.25) %assume a_0 = 1.0
+a_reheat_friedman = params.a0*(rho_reheat/rho_r0)^(-0.25) %assume a_0 = 1.0
 
 %rescale a
 a_reheat_infl = 10^loga_reheat_infl;
-scale_a = a_reheat_friedman/a_reheat_infl;
-rescale_loga = log10(10 .^ loga .* scale_a);
+scale_a = a_reheat_infl/a_reheat_friedman;
 
 %Create inflation part of graph
 t_infl = logspace(-70, log10(t_reheat));
@@ -41,7 +40,6 @@ phidot_infl = y_infl(2,:);
 V_infl = calc_v(phi_infl, params);
 rho_phi_infl = phidot_infl.^2 ./2 + V_infl;
 loga_infl = y_infl(3,:);
-loga_infl_rescale = log10((10 .^ loga_infl) .* scale_a);
 R_H_infl = 1./sqrt(8*pi*params.G_E/3 .* rho_phi_infl);
 
 %Create Friedman part of graph
@@ -57,7 +55,7 @@ hold on
 plot(log10(a_friedman), R_H_friedman, 'ro')
 
 figure()
-plot(loga_infl_rescale, rho_phi_infl, 'b')
+plot(loga_infl, rho_phi_infl, 'b')
 hold on
 plot(log10(a_friedman), rho_friedman, 'r:')
 %plot(rescale_loga, rho_phi, 'g--')
