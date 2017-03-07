@@ -1,3 +1,4 @@
+%Solve differential equation
 t_i =0.0;
 phi_i = 1E19;
 phidot_i = 0.0;
@@ -11,35 +12,18 @@ params = load_params();
 params.m = 1E11
 solution = ode45(@(t,z) EOM_func(t, z, params), tspan, z_i);
 
+%Calculate reheating time and scale factor
 phi = solution.y(1, :);
 phidot = solution.y(2, :);
 loga = solution.y(3, :);
 t = solution.x;
 
-
-V = calc_v(phi, params);
-rho_phi = phidot.^2./2. + V;
-% pressure_phi = phidot.^2./2 - V;
-% w = pressure_phi ./ rho_phi;
-% delta_H = calc_delta_H(solution.y, params);
-% 
-% f3 = figure();
-% semilogx(t, w);
-% title('Equation of State');
-% ylabel('w');
-% xlabel('time');
-% hold on;
-% plot([t_reheat, t_reheat], get(gca, 'ylim'), 'r');
-% l = legend('w', 't_{reheating}');
-% l.Location='Best';
-
-
-%part i
 t_reheat = 1E-11
-%part ii
 y = deval(solution, t_reheat);
-rho_phi_reheat = y(1)
-%part iii
+phi_reheat = y(1)
+phidot_reheat = y(2)
+V_reheat = calc_v(phi_reheat, params)
+rho_phi_reheat = phidot_reheat^2/2 + V_reheat
 rho_r0 = 1.928E-51; %GeV^4, assume g*=2
 a_reheating = (rho_r0/rho_reheat)^(0.25) %assume a_0 = 1.0
 
