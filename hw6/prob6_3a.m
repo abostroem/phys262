@@ -21,14 +21,14 @@ pressure_phi = phidot.^2./2 - V;
 w = pressure_phi ./ rho_phi;
 Vprime = calc_vprime(phi, params);
 H = sqrt((8 * pi * params.G_E)/3 .* rho_phi);
+delta_H =  H .* Vprime ./ (2*pi .* phidot.^2)
 
-'\delta_{H} = '
-indx = find(t < 10^-30)
-H(indx(length(indx)))
-'at t = '
-t(indx(length(indx)))
-'w = '
-w(indx(length(indx)))
+
+indx = find(t < 1.0E-15)
+
+X =sprintf('delta_H = %e for w = %f at t = %e', delta_H(indx(length(indx))), w(indx(length(indx))), t(indx(length(indx))))
+disp(X)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Plot phi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +69,7 @@ semilogx(t, H .* Vprime ./ (2*pi .* phidot.^2));
 title('Density Flucuations');
 ylabel('\delta \rho \\ \rho');
 xlabel('time');
-xlim([0, 3E-15])
+%xlim([10^-20, 3E-15])
 saveas(f4, 'density_fluxuations_prob3.pdf');
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,3 +98,19 @@ xlabel('\phi')
 ylabel('time')
 saveas(f6, 'potential_prob3.pdf')
 
+f7 = figure();
+subplot(3,1,1);
+semilogx(t, w);
+xlim([10^-20, t(length(t))]);
+xlabel('time');
+ylabel('w');
+subplot(3,1,2);
+semilogx(t, delta_H);
+xlim([10^-20, t(length(t))]);
+xlabel('time');
+ylabel('\delta_{H}');
+subplot(3,1,3);
+semilogx(t, delta_H);
+xlim([10^-16, 10^-15]);
+xlabel('time');
+ylabel('\delta_{H}');
