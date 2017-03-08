@@ -1,14 +1,13 @@
 t_i = 0.0;
-phi_i = 1E19;
+phi_i =1E20;
 phidot_i = 0.0;
 loga_ai = 0.0001;
 z_i = [phi_i; phidot_i; loga_ai];
-t_f = 65 * 10^-16;
-t_f = 2E-10
+t_f = 2.2E-10
 npts = 10;
 tspan =[t_i t_f];
 params = load_params();
-params.m = 1E11
+params.m = 3E11
 solution = ode45(@(t,z) EOM_func(t, z, params), tspan, z_i);
 
 phi = solution.y(1, :);
@@ -126,30 +125,30 @@ xlabel('\phi')
 ylabel('time')
 saveas(f6, 'potential_prob4.pdf')
 
-if length(indx) > 0
-    f7 = figure();
-    subplot(3,1,1);
-    semilogx(t, w);
-    hold on;
-    plot([new_t(final_indx-1), new_t(final_indx-1)], get(gca, 'ylim'), 'r');
-    xlim([10^-20, t(length(t))]);
-    xlabel('time');
-    ylabel('w');
-    subplot(3,1,2);
-    semilogx(t, delta_H);
-    hold on;
-    plot([new_t(final_indx-1), new_t(final_indx-1)],get(gca, 'ylim'), 'r');
-    xlim([10^-20, t(length(t))]);
-    xlabel('time');
-    ylabel('\delta_{H}');
-    subplot(3,1,3);
-    semilogx(new_t, new_delta_H);
-    hold on;
-    xlim([new_t(1), new_t(length(new_t))]);
-    plot([new_t(final_indx-1), new_t(final_indx-1)], get(gca, 'ylim'), 'r');
-    plot(get(gca, 'xlim'), [10^-5, 10^-5], 'c--');
-    xlabel('time');
-    ylabel('\delta_{H}');
-    legend('\delta_H', 'measure \delta_H', '10^{-5}')
-    saveas(f7, 'delta_H_realistic_time.pdf')
-end
+% if length(indx) > 0
+%     f7 = figure();
+%     subplot(3,1,1);
+%     semilogx(t, w);
+%     hold on;
+%     plot([new_t(final_indx-1), new_t(final_indx-1)], get(gca, 'ylim'), 'r');
+%     xlim([10^-20, t(length(t))]);
+%     xlabel('time');
+%     ylabel('w');
+%     subplot(3,1,2);
+%     semilogx(t, delta_H);
+%     hold on;
+%     plot([new_t(final_indx-1), new_t(final_indx-1)],get(gca, 'ylim'), 'r');
+%     xlim([10^-20, t(length(t))]);
+%     xlabel('time');
+%     ylabel('\delta_{H}');
+%     subplot(3,1,3);
+%     semilogx(new_t, new_delta_H);
+%     hold on;
+%     xlim([new_t(1), new_t(length(new_t))]);
+%     plot([new_t(final_indx-1), new_t(final_indx-1)], get(gca, 'ylim'), 'r');
+%     plot(get(gca, 'xlim'), [10^-5, 10^-5], 'c--');
+%     xlabel('time');
+%     ylabel('\delta_{H}');
+%     legend('\delta_H', 'measure \delta_H', '10^{-5}')
+%     saveas(f7, 'delta_H_realistic_time.pdf')
+% end
