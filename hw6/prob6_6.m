@@ -4,6 +4,7 @@ phi_i = 1E19;
 phidot_i = 0.0;
 loga_ai = 0.001;
 z_i = [phi_i; phidot_i; loga_ai];
+
 %t_f = 65 * 10^-16;
 t_f = 2E-10
 npts = 10;
@@ -43,20 +44,22 @@ R_H_infl = 1./sqrt(8*pi*params.G_E/3 .* rho_phi_infl);
 a_reheat_friedman = params.a0*(rho_reheat/rho_rel0)^(-0.25) %assume a_0 = 1.0
 rho_rel_reheat = rho_phi_infl(length(rho_phi_infl))
 
+
 %Create Friedman part of graph
 rho_m0 = 9.578E-48; %GeV^4
 rho_L0 = 2.463E-47; %GeV^4
-a_friedman = logspace(loga_reheat_infl,30);
-rho_friedman = rho_rel_reheat .* (a_friedman./a_reheat_infl).^-4 + rho_m0 .* (a_friedman./params.a0).^-3 + rho_L0;
+a_friedman = logspace(log10(a_reheat_friedman),30);
+rho_friedman = rho_rel_reheat .* (a_friedman./a_reheat_friedman).^-4 + rho_m0 .* (a_friedman./params.a0).^-3 + rho_L0;
 R_H_friedman = 1./sqrt(8*pi*params.G_E/3 .* rho_friedman);
 
+a_infl_rescale = 10 .^ loga_infl * a_reheat_friedman/a_reheat_infl
 figure()
-loglog(10.^loga_infl, R_H_infl, 'b')
+loglog(a_infl_rescale, R_H_infl, 'b')
 hold on
 loglog(a_friedman, R_H_friedman, 'r:')
 
 figure()
-loglog(10.^loga_infl, rho_phi_infl, 'b')
+loglog(a_infl_rescale, rho_phi_infl, 'b')
 hold on
 loglog(a_friedman, rho_friedman, 'r:')
 
