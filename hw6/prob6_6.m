@@ -26,7 +26,7 @@ loga_reheat_infl = y(3)
 V_reheat = calc_v(phi_reheat, params)
 rho_reheat = phidot_reheat^2/2 + V_reheat
 rho_r0 = 1.928E-51; %GeV^4, assume g*=2
-a_reheat_friedman = (rho_r0/rho_reheat)^(0.25) %assume a_0 = 1.0
+a_reheat_friedman = (rho_reheat/rho_r0)^(-0.25)*params.a0 %assume a_0 = 1.0
 
 %rescale a
 a_reheat_infl = 10^loga_reheat_infl;
