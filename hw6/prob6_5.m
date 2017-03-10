@@ -22,7 +22,7 @@ w = pressure_phi ./ rho_phi;
 delta_H = calc_delta_H(solution.y, params);
 
 %part i
-t_reheat = 1.3E-10;
+t_reheat = 1.3E-10
 %part ii
 y = deval(solution, t_reheat);
 phi_reheat = y(1);
@@ -30,16 +30,18 @@ phidot_reheat = y(2);
 loga_reheat_infl = y(3);
 a_reheat_infl = 10^loga_reheat_infl;
 V_reheat = calc_v(phi_reheat, params);
-rho_reheat = phidot_reheat^2/2 + V_reheat;
+rho_reheat = phidot_reheat^2/2 + V_reheat
 %part iii
 rho_rel0 = 1.928E-51; %GeV^4, assume g*=2
-a_reheat_friedman = params.a0*(rho_reheat/rho_rel0)^(-0.25); %assume a_0 = 1.0
+a_reheat_friedman = params.a0*(rho_reheat/rho_rel0)^(-0.25) %assume a_0 = 1.0
+
+T = (rho_reheat*30/pi^2/2)^0.25
 %part iv
-T = (params.a0/a_reheat_friedman)*params.T0_E;  %assume a_0 = 1.0
+T_reheat = (params.a0/a_reheat_friedman)*params.T0_E  %assume a_0 = 1.0
 %part v
 d0_E = [1.563E38,   1.563E40,  1.5637E41]; %1 / GeV; 1, 100, 1000 Mpc
 d_comoving = d0_E/1.0; %assume a0 = 1
-d_reheating = d_comoving*a_reheat_friedman; %1/GeV
+d_reheat = d_comoving*a_reheat_friedman %1/GeV
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Plot w

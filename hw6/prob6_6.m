@@ -28,7 +28,7 @@ rho_reheat = phidot_reheat^2/2 + V_reheat;
 rho_rel0 = 1.928E-51; %GeV^4, assume g*=2
 
 %Create inflation part of graph
-t_infl = logspace(-70, log10(t_reheat), 1000);
+t_infl = logspace(-70, log10(t_reheat), 100000);
 y_infl = deval(solution, t_infl);
 phi_infl = y_infl(1,:);
 phidot_infl = y_infl(2,:);
@@ -47,6 +47,8 @@ rho_L0 = 2.463E-47; %GeV^4
 a_friedman = logspace(log10(a_reheat_friedman),30);
 rho_friedman = rho_rel_reheat .* (a_friedman./a_reheat_friedman).^-4 + rho_m0 .* (a_friedman./params.a0).^-3 + rho_L0;
 R_H_friedman = 1./sqrt(8*pi*params.G_E/3 .* rho_friedman);
+rho_today = rho_rel_reheat .* (params.a0./a_reheat_friedman).^-4 + rho_m0 .* (params.a0./params.a0).^-3 + rho_L0;
+R_H_today = 1./sqrt(8*pi*params.G_E/3 .* rho_today);
 
 d0_E = [1.563E38,   1.563E40,  1.5637E41]; %1 / GeV; 1, 100, 1000 Mpc
 d_comoving = d0_E/1.0; %assume a0 = 1
@@ -63,24 +65,38 @@ fit3 = polyfit([params.a0, a_reheat_friedman],[d_comoving(3), d_reheating(3)], 1
 yfit3 = polyval(fit3, all_a);
 
 
-figure();
-loglog(a_infl_rescale, R_H_infl, 'r');
+f = figure();
+plot(log10(a_infl_rescale), log10(R_H_infl/R_H_today), 'r');
 hold on
-loglog(a_friedman, R_H_friedman, 'm');
-loglog(all_a, yfit1, 'b');
-loglog(all_a, yfit2, 'g');
-loglog(all_a, yfit3, 'c');
-ylim([10E-20, 10E45]);
-xlim([10E-60, 5]);
-l = legend('Inflation', 'Friedman', '1Mpc', '10Mpc', '1000Mpc');
-l.Location='Best';
-xlabel('Scale Factor (a)')
-ylabel('R_H')
+plot(log10(a_friedman), log10(R_H_friedman/R_H_today), 'm');
+plot(log10(all_a), log10(yfit1/R_H_today), 'b');
+plot(log10(all_a), log10(yfit2/R_H_today), 'g');
+plot(log10(all_a), log10(yfit3/R_H_today), 'c');
+%ylim([10E-20, 10E45]);
+xlim([-60, log10(5)]);
+
+
+xlabel('log(a/a_0)');
+ylabel('log(R_H/R_{H,0})');
 % figure();
 % loglog(a_infl_rescale, rho_phi_infl, 'b');
 % hold on
 % loglog(a_friedman, rho_friedman, 'r:');
 
-
-
+%loga_intercept_right = [-5.7860, -3.55887, -1.87271]
+loga_intercept_left = [-50.514, -52.526, -53.533];
+loga_intercept_indices = [];
+density_fluc = []
+for i = 1:3;
+    diff = log10(a_infl_rescale) - loga_intercept_left(i);
+    min_val = min(abs(diff));
+    min_indx = find(abs(diff) == min_val)
+    loga_intercept_indices = [loga_intercept_indices, min_indx];
+    delta_H = calc_delta_H(y_infl(:, min_indx), params);
+    density_fluc = [density_fluc, delta_H]
+    plot(log10(a_infl_rescale(min_indx)), log10(R_H_infl(min_indx)/R_H_today), 'k.');
+end
+l = legend('Inflation', 'Friedman', '1Mpc', '10Mpc', '1000Mpc', 'comoving intercept');
+l.Location='Best';
+saveas(f, 'hubble_length_prob6.pdf');
 
